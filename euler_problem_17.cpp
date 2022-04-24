@@ -29,7 +29,7 @@ string one_digit_to_letters(int n){
 
 string two_digit_to_letters(int n){
   MAP_INT_STRING thismap;
-  assert( n < 100 && n > 0);
+  assert( n < 100 && n > 9);
   thismap.insert(make_pair(10,"ten"));
   thismap.insert(make_pair(20,"twenty"));
   thismap.insert(make_pair(30,"thirty"));
@@ -59,16 +59,45 @@ string two_digit_to_letters(int n){
   
 }
 
+string three_digit_to_letters(int n){
+  MAP_INT_STRING thismap;
+  assert( n < 1000 && n > 99);
+
+  string result;
+  string hundred = one_digit_to_letters(n/100) + string("hundred");  
+  int remainder = n % 100;
+  if (remainder > 9 && remainder < 100) {
+    result = hundred + string("and") + two_digit_to_letters(remainder);
+  }else if (remainder < 10) {
+    result =  hundred + string("and") + one_digit_to_letters(remainder);
+  }else if (remainder == 0) {
+    result =  hundred;
+  }else{
+    assert(false); // should not be here.
+  }
+
+  return result;
+  
+}
+
 
 string number_to_words(int n){
   if (n > 0 && n < 10)   return one_digit_to_letters(n);
   if (n > 10 && n < 100)   return two_digit_to_letters(n);
+  if (n > 100 && n < 1000)   return three_digit_to_letters(n);
+  if (n == 1000)   return string("onethousand");
+  assert(false); // should not be here.
   return string("one");
 }
 
 
 int number_of_letters(int n){
   return number_to_words(n).size();
+}
+
+TEST_CASE("test_three_digit_to_letters"){
+  CHECK(three_digit_to_letters(301) == "threehundredandone");
+  CHECK(three_digit_to_letters(342) == "threehundredandfortytwo");
 }
 
 TEST_CASE("test_two_digit_to_letters"){
@@ -90,6 +119,7 @@ TEST_CASE("test_one_digit_to_letters"){
 
 TEST_CASE("test_acceptance"){
   CHECK(number_of_letters(1) == 3);
-  CHECK(number_of_letters(342) == 20);
+  CHECK(number_of_letters(342) == 23);
+  CHECK(number_of_letters(115) == 20);
 }
 
