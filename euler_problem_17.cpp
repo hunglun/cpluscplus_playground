@@ -1,5 +1,8 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include <doctest.h>
+#ifdef DOCTEST
+  #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+  #include <doctest.h>
+#endif // INTEGRATION_TEST
+
 #include <iostream>
 #include <map>
 #include <cassert>
@@ -68,10 +71,10 @@ string three_digit_to_letters(int n){
   int remainder = n % 100;
   if (remainder > 9 && remainder < 100) {
     result = hundred + string("and") + two_digit_to_letters(remainder);
-  }else if (remainder < 10) {
-    result =  hundred + string("and") + one_digit_to_letters(remainder);
   }else if (remainder == 0) {
     result =  hundred;
+  }else if (remainder < 10 && remainder != 0) {
+    result =  hundred + string("and") + one_digit_to_letters(remainder);    
   }else{
     assert(false); // should not be here.
   }
@@ -83,8 +86,8 @@ string three_digit_to_letters(int n){
 
 string number_to_words(int n){
   if (n > 0 && n < 10)   return one_digit_to_letters(n);
-  if (n > 10 && n < 100)   return two_digit_to_letters(n);
-  if (n > 100 && n < 1000)   return three_digit_to_letters(n);
+  if (n >= 10 && n < 100)   return two_digit_to_letters(n);
+  if (n >= 100 && n < 1000)   return three_digit_to_letters(n);
   if (n == 1000)   return string("onethousand");
   assert(false); // should not be here.
   return string("one");
@@ -95,13 +98,16 @@ int number_of_letters(int n){
   return number_to_words(n).size();
 }
 
+#ifdef DOCTEST
 TEST_CASE("test_three_digit_to_letters"){
+  CHECK(three_digit_to_letters(100) == "onehundred");
   CHECK(three_digit_to_letters(301) == "threehundredandone");
   CHECK(three_digit_to_letters(342) == "threehundredandfortytwo");
 }
 
 TEST_CASE("test_two_digit_to_letters"){
   CHECK(two_digit_to_letters(22) == "twentytwo");
+  CHECK(two_digit_to_letters(10) == "ten");
 }
 
 TEST_CASE("test_one_digit_to_letters"){
@@ -122,4 +128,4 @@ TEST_CASE("test_acceptance"){
   CHECK(number_of_letters(342) == 23);
   CHECK(number_of_letters(115) == 20);
 }
-
+#endif // DOCTEST
