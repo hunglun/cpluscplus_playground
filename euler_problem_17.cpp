@@ -7,8 +7,7 @@ using namespace std;
 
 
 #define MAP_INT_STRING map <int, string>
-
-string single_digit_to_letters(int n){
+string one_digit_to_letters(int n){
   MAP_INT_STRING digit_to_words;
   digit_to_words.insert(make_pair(1,"one"));
   digit_to_words.insert(make_pair(2,"two"));
@@ -28,8 +27,42 @@ string single_digit_to_letters(int n){
   return string("");
 }
 
+string two_digit_to_letters(int n){
+  MAP_INT_STRING thismap;
+  assert( n < 100 && n > 0);
+  thismap.insert(make_pair(10,"ten"));
+  thismap.insert(make_pair(20,"twenty"));
+  thismap.insert(make_pair(30,"thirty"));
+  thismap.insert(make_pair(40,"forty"));
+  thismap.insert(make_pair(50,"fifty"));
+  thismap.insert(make_pair(60,"sixty"));
+  thismap.insert(make_pair(70,"seventy"));
+  thismap.insert(make_pair(80,"eighty"));
+  thismap.insert(make_pair(90,"ninty"));
+
+  thismap.insert(make_pair(11,"eleven"));
+  thismap.insert(make_pair(12,"twelve"));
+  thismap.insert(make_pair(13,"thirteen"));
+  thismap.insert(make_pair(14,"fourteen"));
+  thismap.insert(make_pair(15,"fifteen"));
+  thismap.insert(make_pair(16,"sixteen"));
+  thismap.insert(make_pair(17,"seventeen"));
+  thismap.insert(make_pair(18,"eighteen"));
+  thismap.insert(make_pair(19,"nineteen"));
+
+  MAP_INT_STRING::const_iterator found_element = thismap.find(n);
+  if (found_element != thismap.end()){
+    return found_element->second;
+  }
+
+  return two_digit_to_letters( (n / 10) * 10) + one_digit_to_letters(n%10);
+  
+}
+
+
 string number_to_words(int n){
-  if (n > 0 && n < 10)   return single_digit_to_letters(n);
+  if (n > 0 && n < 10)   return one_digit_to_letters(n);
+  if (n > 10 && n < 100)   return two_digit_to_letters(n);
   return string("one");
 }
 
@@ -38,16 +71,20 @@ int number_of_letters(int n){
   return number_to_words(n).size();
 }
 
-TEST_CASE("test_single_digit_to_letters"){
-  CHECK(single_digit_to_letters(1).size() == 3);
-  CHECK(single_digit_to_letters(2).size() == 3);
-  CHECK(single_digit_to_letters(3).size() == 5);
-  CHECK(single_digit_to_letters(4).size() == 4);
-  CHECK(single_digit_to_letters(5).size() == 4);
-  CHECK(single_digit_to_letters(6).size() == 3);
-  CHECK(single_digit_to_letters(7).size() == 5);
-  CHECK(single_digit_to_letters(8).size() == 5);
-  CHECK(single_digit_to_letters(9).size() == 4);  
+TEST_CASE("test_two_digit_to_letters"){
+  CHECK(two_digit_to_letters(22) == "twentytwo");
+}
+
+TEST_CASE("test_one_digit_to_letters"){
+  CHECK(one_digit_to_letters(1).size() == 3);
+  CHECK(one_digit_to_letters(2).size() == 3);
+  CHECK(one_digit_to_letters(3).size() == 5);
+  CHECK(one_digit_to_letters(4).size() == 4);
+  CHECK(one_digit_to_letters(5).size() == 4);
+  CHECK(one_digit_to_letters(6).size() == 3);
+  CHECK(one_digit_to_letters(7).size() == 5);
+  CHECK(one_digit_to_letters(8).size() == 5);
+  CHECK(one_digit_to_letters(9).size() == 4);  
 }
 
 
