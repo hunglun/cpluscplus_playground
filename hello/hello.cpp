@@ -3,12 +3,17 @@
   #include <doctest.h>
 #endif // DOCTEST
 
+#ifndef DOCTEST
+
 #include <iostream>
 using namespace std;
 int main(void){
   cout << "hello world!" << endl;
   return 0;
 }
+
+#endif // DOCTEST
+
 
 #ifdef DOCTEST
 TEST_CASE("hello"){
