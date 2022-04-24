@@ -1,16 +1,11 @@
 all: run
 
-build:
-	g++ -o out/hello hello.cpp
+main:	hello.cpp main.cpp
+	g++ -o out/main hello.cpp main.cpp
 
-buildtest:
-	g++ -DDOCTEST -g -o out/testhello hello.cpp -I/home/user/github/doctest/doctest
+test:	hello.cpp test.cpp
+	g++ -g -o out/test hello.cpp test.cpp -I/home/user/github/doctest/doctest
 
-test: buildtest
-	./out/testhello -d
-
-buildrun:
-	g++ -g -o out/hello hello.cpp
-
-run: test buildrun
-	./out/hello
+run: ./out/main ./out/test
+	./out/test
+	./out/main
