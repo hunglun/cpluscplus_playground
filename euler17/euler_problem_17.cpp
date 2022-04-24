@@ -108,6 +108,7 @@ TEST_CASE("test_three_digit_to_letters"){
 TEST_CASE("test_two_digit_to_letters"){
   CHECK(two_digit_to_letters(22) == "twentytwo");
   CHECK(two_digit_to_letters(10) == "ten");
+  CHECK(two_digit_to_letters(91) == "ninetyone");
 }
 
 TEST_CASE("test_one_digit_to_letters"){
