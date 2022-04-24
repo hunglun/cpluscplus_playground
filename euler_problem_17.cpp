@@ -41,7 +41,7 @@ string two_digit_to_letters(int n){
   thismap.insert(make_pair(60,"sixty"));
   thismap.insert(make_pair(70,"seventy"));
   thismap.insert(make_pair(80,"eighty"));
-  thismap.insert(make_pair(90,"ninty"));
+  thismap.insert(make_pair(90,"ninety"));
 
   thismap.insert(make_pair(11,"eleven"));
   thismap.insert(make_pair(12,"twelve"));
